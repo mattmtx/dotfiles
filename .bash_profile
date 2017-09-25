@@ -58,7 +58,6 @@ alias map="xargs -n1"
 # Lock the screen (when going AFK)
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 
-
 # Make vim the default editor.
 export EDITOR='vim';
 # Enable persistent REPL history for `node`.
@@ -76,24 +75,44 @@ export HISTFILESIZE="${HISTSIZE}";
 export HISTCONTROL='ignoreboth';
 
 findstr() { grep -rin "$1" ./ ;}
+repofind() { ~/dev/awsfun/repofind.sh $1 ;}
+awsssh() { ~/awsssh.sh $1 ;}
 
-_complete_ssh_hosts ()¬
-{¬
-        COMPREPLY=()¬
-        cur="${COMP_WORDS[COMP_CWORD]}"¬
-        comp_ssh_hosts=`cat ~/.ssh/known_hosts | \¬
-                        cut -f 1 -d ' ' | \¬
-                        sed -e s/,.*//g | \¬
-                        grep -v ^# | \¬
-                        uniq | \¬
-                        grep -v "\[" ;¬
-                cat ~/.ssh/config | \¬
-                        grep "^Host " | \¬
-                        awk '{print $2}'¬
-                `¬
-        COMPREPLY=( $(compgen -W "${comp_ssh_hosts}" -- $cur))¬
-        return 0¬
-}¬
+_complete_ssh_hosts ()
+{
+        COMPREPLY=()
+        cur="${COMP_WORDS[COMP_CWORD]}"
+        comp_ssh_hosts=`cat ~/.ssh/known_hosts | \
+                        cut -f 1 -d ' ' | \
+                        sed -e s/,.*//g | \
+                        grep -v ^# | \
+                        uniq | \
+                        grep -v "\[" ;
+                cat ~/.ssh/config | \
+                        grep "^Host " | \
+                        awk '{print $2}'
+                `
+        COMPREPLY=( $(compgen -W "${comp_ssh_hosts}" -- $cur))
+        return 0
+}
 complete -F _complete_ssh_hosts ssh
 
 source ~/.bash_prompt
+export WORKON_HOME=$HOME/.virtualenvs
+export PIP_VIRTUALENV_BASE=$WORKON_HOME
+export PIP_RESPECT_VIRTUALENV=true
+
+if [[ -r /usr/local/bin/virtualenvwrapper.sh ]]; then
+    source /usr/local/bin/virtualenvwrapper.sh
+else
+    echo "WARNING: Can't find virtualenvwrapper.sh"
+fi
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+export PATH=~/Library/Python/3.6/bin:~/Library/Python/2.7/bin:$PATH
+
+. ~/.awsAliases
+alias awsall="_awsListAll"
+alias awsp="_awsSwitchProfile"
+alias awswho="aws configure list"
