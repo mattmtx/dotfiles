@@ -1,0 +1,10 @@
+[user]
+	name = Matt Meredith
+	email = mmeredith@gmail.com
+[alias]
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    unstage = reset HEAD --
+    last = log -l HEAD

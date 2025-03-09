@@ -9,10 +9,9 @@ set ruler
 " Enable mouse in all modes
 " set mouse=a
 " Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set list
+" set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+" set list
 " Use the Solarized Dark theme
 set background=dark
-colorscheme solarized
+" colorscheme solarized
 let g:solarized_termtrans=1
-
